@@ -22,7 +22,7 @@ defmodule ElixirServer.Pool do
     case Poison.decode(data) do
       {:ok, %{"name" => name}} -> ElixirServer.Clients.welcome_client(name,socket,transport)
       {:ok, %{"message" => message,"message_id"=>message_id}} -> ElixirServer.Clients.send_msg(socket,message,message_id)
-      result -> transport.send(socket,"Some Error")
+      _ -> :none
     end
     {:noreply, state}
   end

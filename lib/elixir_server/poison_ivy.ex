@@ -5,7 +5,6 @@ defmodule PoisonIvy do
       %{
         "type" => "message_sent",
         "message_id" => message_id,
-      "theme"=>theme_data()
       }
     )
   end
@@ -16,7 +15,6 @@ defmodule PoisonIvy do
         "type" => "message_received",
         "message" => message,
         "sender" => sender,
-        "theme"=>theme_data()
       }
     )
   end
@@ -26,7 +24,6 @@ defmodule PoisonIvy do
       %{
         "type" => "entered_chat",
         "members" => list,
-        "theme"=>theme_data()
       }
     )
   end
@@ -36,7 +33,6 @@ defmodule PoisonIvy do
       %{
         "type" => "welcome",
         "who" => rookie,
-        "theme"=>theme_data()
       }
     )
   end
@@ -46,7 +42,6 @@ defmodule PoisonIvy do
       %{
         "type" => "gone",
         "who" => goner,
-        "theme"=>theme_data()
       }
     )
   end

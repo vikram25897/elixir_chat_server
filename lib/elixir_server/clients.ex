@@ -4,9 +4,12 @@ defmodule ElixirServer.Clients do
   def welcome_client(name, socket, transport) do
     members = :ets.match_object(@table, {:_, :"$1", :_})
     list = for {socket, name_new, transport} <- members, true do
-      send_indie_message(socket, transport, PoisonIvy.welcome_message_all(name))
-      name_new
+      {:ok,{ip,port}} = :inet.peername(socket)
+      IO.inspect(:inet.peername(socket))
+      send_indie_message(socket, transport, PoisonIvy.welcome_message_all(%{"name"=>name_new,"ip"=> ip|>Tuple.to_list |> Enum.join("."),"port"=>port}))
+      %{"name"=>name_new,"ip"=> ip|>Tuple.to_list |> Enum.join("."),"port"=>port}
     end
+    IO.inspect PoisonIvy.welcome_message_self(list)
     send_indie_message(socket, transport, PoisonIvy.welcome_message_self(list))
     :ets.insert(@table, {socket, name, transport})
   end
