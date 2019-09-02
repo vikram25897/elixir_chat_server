@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="97ed5530-5501-428a-a809-cd49057639ad" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/emacs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/elixir_server/clients.ex" beforeDir="false" afterPath="$PROJECT_DIR$/lib/elixir_server/clients.ex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/elixir_server/poison_ivy.ex" beforeDir="false" afterPath="$PROJECT_DIR$/lib/elixir_server/poison_ivy.ex" afterDir="false" />
@@ -98,6 +96,9 @@
       <workItem from="1566827106941" duration="567000" />
       <workItem from="1566891515485" duration="89000" />
       <workItem from="1566891623109" duration="3869000" />
+      <workItem from="1567066323607" duration="6284000" />
+      <workItem from="1567156116441" duration="2712000" />
+      <workItem from="1567413481154" duration="2204000" />
     </task>
     <servers />
   </component>

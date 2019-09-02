@@ -21,7 +21,7 @@ defmodule ElixirServer.Pool do
   def handle_info({:tcp, socket, data}, state = %{socket: socket, transport: transport}) do
     case Poison.decode(data) do
       {:ok, %{"name" => name}} -> ElixirServer.Clients.welcome_client(name,socket,transport)
-      {:ok, %{"message" => message,"message_id"=>message_id}} -> ElixirServer.Clients.send_msg(socket,message,message_id)
+      {:ok, %{"message" => message,"message_id"=>message_id,"receiver"=>receiver}} -> ElixirServer.Clients.send_msg(socket,message,message_id,receiver)
       _ -> :none
     end
     {:noreply, state}

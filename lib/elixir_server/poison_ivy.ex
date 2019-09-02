@@ -19,11 +19,14 @@ defmodule PoisonIvy do
     )
   end
 
-  def welcome_message_self(list) do
+  def welcome_message_self(list,ip) do
     Poison.encode!(
       %{
         "type" => "entered_chat",
         "members" => list,
+        "ip"=> ip
+               |> Tuple.to_list
+               |> Enum.join(".")
       }
     )
   end

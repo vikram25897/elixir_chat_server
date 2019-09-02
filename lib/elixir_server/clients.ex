@@ -3,14 +3,32 @@ defmodule ElixirServer.Clients do
 
   def welcome_client(name, socket, transport) do
     members = :ets.match_object(@table, {:_, :"$1", :_})
-    list = for {socket, name_new, transport} <- members, true do
-      {:ok,{ip,port}} = :inet.peername(socket)
-      IO.inspect(:inet.peername(socket))
-      send_indie_message(socket, transport, PoisonIvy.welcome_message_all(%{"name"=>name_new,"ip"=> ip|>Tuple.to_list |> Enum.join("."),"port"=>port}))
-      %{"name"=>name_new,"ip"=> ip|>Tuple.to_list |> Enum.join("."),"port"=>port}
+    {:ok, {ip, port}} = :inet.peername(socket)
+    list = for {sock, name_new, trans} <- members, true do
+      send_indie_message(
+        sock,
+        trans,
+        PoisonIvy.welcome_message_all(
+          %{
+            "name" => name,
+            "ip" => ip
+                    |> Tuple.to_list
+                    |> Enum.join("."),
+            "port" => port
+          }
+        )
+      )
+      {:ok, {ip2, port2}} = :inet.peername(sock)
+      %{
+        "name" => name_new,
+        "ip" => ip2
+                |> Tuple.to_list
+                |> Enum.join("."),
+        "port" => port2
+      }
     end
-    IO.inspect PoisonIvy.welcome_message_self(list)
-    send_indie_message(socket, transport, PoisonIvy.welcome_message_self(list))
+    IO.inspect PoisonIvy.welcome_message_self(list,ip)
+    send_indie_message(socket, transport, PoisonIvy.welcome_message_self(list,ip))
     :ets.insert(@table, {socket, name, transport})
   end
 
@@ -20,15 +38,11 @@ defmodule ElixirServer.Clients do
     send_msg_to_all(PoisonIvy.goodbye_message(goner))
   end
 
-  def send_msg(socket, message, message_id) do
-    [{_, sender, _}] = :ets.lookup(@table, socket)
-    list = :ets.match_object(@table, {:"$1", :"$2", :"$3"})
-    Enum.each list, fn ({sock, _, transport}) ->
-      cond do
-        sock == socket -> send_indie_message(socket, transport, PoisonIvy.message_sent(message_id))
-        true -> send_indie_message(sock, transport, PoisonIvy.message_received(message, sender))
-      end
-    end
+  def send_msg(socket, message, message_id, receiver) do
+    [{_, sender, transport}] = :ets.lookup(@table, socket)
+    [{s, _, t}] = :ets.match_object(@table, {:"$1", receiver, :"$3"})
+    send_indie_message(socket, transport, PoisonIvy.message_sent(message_id))
+    send_indie_message(s, t, PoisonIvy.message_received(message, sender))
   end
 
   def send_msg_to_all(message) do
